@@ -1,0 +1,25 @@
+  - name: Sync With Hugging Face Hub
+  # You may pin to the exact commit or the version.
+  # uses: nateraw/huggingface-sync-action@54e4f55015a52747b4e2a5c9f2ee1056880cdd42
+  on:
+    push:
+      branches: [main]
+
+    workflow_dispatch:
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: add remote
+        env:
+          HG: {{secrets.HF_SECRET}}
+        run: git remote add space https://itsdante:HF@huggingface.co/spaces/itsdante/gradio-test
+      - name: push to hub
+        env:
+          HG: {{secrets.HF_SECRET}}
+        run: git psuh --force https://itsdante:HF@huggingface.co/spaces/itsdante/gradio-test main
+          
+    
